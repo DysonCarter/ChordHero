@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+p {
+    position: relative;
+    line-height: 3em;
+}
+
+.lyric-chord {
+    display: inline-block;
+    position: relative;
+    margin-right: 5px; /* Space between chord/lyric pairs */
+}
+
+.lyric-chord .chord {
+    display: block;
+    font-size: 0.8em; /* Slightly smaller for chords */
+    font-weight: bold;
+    color: #333;
+    position: absolute;
+    top: -1.5em; /* Moves the chord above the lyrics */
+    left: 0;
+    white-space: nowrap; /* Prevents chords from breaking onto the next line */
+}
+
+.lyric-chord .lyric {
+    display: block;
+    text-align: center; /* Align lyrics and chords center */
+}
