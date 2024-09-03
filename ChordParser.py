@@ -12,20 +12,25 @@ def extract_section_name(line):
 
 def extract_section_body(section):
     lines = section.strip().split("\n")
-    html_output = "<p>"
+    html_output = "<p>"  # Open paragraph once for the section body
     
     for line in lines:
         segments = line.split('[')
         for segment in segments:
             if ']' in segment:
                 chord, lyric = segment.split(']', 1)
-                html_output += f'<span class="lyric-chord"><span class="chord">{chord.strip()}</span><span class="lyric">{lyric.strip()}</span></span> '
+                chord_html = f'<span class="chord">{chord.strip()}</span>'
+                if lyric.strip():
+                    html_output += f'<span class="lyric-chord">{chord_html}<span class="lyric">{lyric.strip()}</span></span> '
+                else:
+                    # If no lyrics, just add the chord without the lyric span
+                    html_output += f'{chord_html} '
             else:
                 html_output += segment + ' '  # Add any part without chords
         
-        html_output += "<br>\n" 
+        html_output += "<br>\n"  # Add <br> for each line break
     
-    html_output += "</p>\n"
+    html_output += "</p>\n"  # Close the paragraph at the end of the section
     
     return html_output
 
