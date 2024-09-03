@@ -1,8 +1,14 @@
-def extract_title(input_file):
-    # Split the input by lines and return the first line as the title
-    lines = input_file.strip().splitlines()
-    title = lines[0].strip()
-    return title
+def extract_title(line):
+    return line.strip()
+
+def extract_section_name(line):
+    # Split the line by '{' to separate the section name from the content
+    section_part = line.split('{')[0].strip()
+    
+    # Only keep the first part before any space and replace underscores with spaces
+    section_name = section_part.split()[0].replace('_', ' ')
+    
+    return section_name
 
 # Example usage
 input_file = """
@@ -32,6 +38,3 @@ Bridge {
 
 Chorus
 """
-
-title = extract_title(input_file)
-print("Title:", title)
