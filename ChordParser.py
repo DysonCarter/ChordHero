@@ -10,6 +10,24 @@ def extract_section_name(line):
     
     return section_name
 
+def parse(file):
+    lines = file.strip().split("\n")
+    
+    # Extract title (assume the first non-empty line is the title)
+    title = extract_title(lines[0])
+    html_output = f"<h2>{title}</h2>\n"
+
+    for line in lines[1:]:
+        line = line.strip()
+        if not line:
+            continue
+        
+        if '{' in line:
+            section_name = extract_section_name(line)
+            html_output += f"<h3>{section_name}</h3>\n"
+
+    return html_output
+
 # Example usage
 input_file = """
 Build My Life
@@ -38,3 +56,5 @@ Bridge {
 
 Chorus
 """
+
+print(parse(input_file))
