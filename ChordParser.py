@@ -30,18 +30,20 @@ def extract_section_body(section):
         
         html_output += "<br>\n"  # Add <br> for each line break
     
-    html_output += "</p>\n"  # Close the paragraph at the end of the section
+    html_output += "</p></div>\n"  # Close the paragraph at the end of the section
     
     return html_output
 
 def parse(file):
     lines = file.strip().split("\n")
+    section_storage = {}
     
     # Extract title
     title = extract_title(lines[0])
-    html_output = f"<h2>{title}</h2>\n"
+    html_output = f"<h2>{title}</h2><br>\n"
     
     section_body = ""
+    section_name = ""
     
     for line in lines[1:]:
         line = line.strip()
@@ -49,17 +51,27 @@ def parse(file):
             continue
         
         if '{' in line:
-            # Extract Section Name
+            # Extract and normalize Section Name
             section_name = extract_section_name(line)
-            html_output += f"<h3>{section_name}</h3>\n"
+            html_output += f"<div class='section'><h3>{section_name}</h3>\n"
         elif '}' in line:
             # Close section and extract its body
-            html_output += extract_section_body(section_body)
+            section_html = extract_section_body(section_body)
+            html_output += section_html
+            # Store the section's HTML for future use using the normalized name
+            section_storage[section_name] = section_html
             section_body = ""  # Reset for next section
+        elif line.replace('_', ' ') in section_storage:
+            # If the normalized section name is found again, reuse the stored HTML
+            normalized_name = line.replace('_', ' ')
+            html_output += f"<div class='section'><h3>{normalized_name}</h3>\n"
+            html_output += section_storage[normalized_name]
         else:
             section_body += line + "\n"  # Collect lines for the section body
     
     return html_output
+
+
 
 input_file = """
 Build My Life
@@ -79,14 +91,12 @@ Chorus {
 
 Verse_1
 
-Chorus
-
 Bridge {
     [4 maj9]I will build my [5 sus]life upon your
     [6]love it is a [1/3]firm foundation.
 }
 
-Chorus
+
 """
 
 html_header = """

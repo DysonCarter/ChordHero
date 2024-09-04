@@ -3,6 +3,12 @@ body {
     margin: 20px;
 }
 
+h2 {
+    width: 100%; /* Ensures the h2 takes full width, but doesn't affect flex items */
+    margin-bottom: 20px; /* Adds space below the title */
+    position: relative; /* Removes it from affecting the flexbox layout */
+}
+
 p {
     position: relative;
     line-height: 3em;
@@ -28,4 +34,19 @@ p {
 .lyric-chord .lyric {
     display: block;
     text-align: center; /* Align lyrics and chords center */
+}
+
+body {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping of items to the next line */
+}
+
+.section {
+    width: 25em; /* Adjust width to fit two sections in one row */
+    margin: 1%; /* Adds space around each section */
+    box-sizing: border-box; /* Ensures padding and borders are included in the width */
+}
+
+.section h3 {
+    margin-right: 10px; /* Space between the section title and its content */
 }
