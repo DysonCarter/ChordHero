@@ -43,7 +43,7 @@ body {
 
 .section {
     width: 25em; /* Adjust width to fit two sections in one row */
-    margin: 1%; /* Adds space around each section */
+    padding: 1em; /* Adds space around each section */
     box-sizing: border-box; /* Ensures padding and borders are included in the width */
 }
 
