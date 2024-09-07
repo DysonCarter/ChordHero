@@ -1,6 +1,10 @@
 def extract_title(line):
     return line.strip()
 
+def extract_key(line):
+    key = line.split('{')[1].replace('}', '').strip()
+    return key
+
 def extract_section_name(line):
     # Split the line by '{' to separate the section name from the content
     section_part = line.split('{')[0].strip()
@@ -52,19 +56,29 @@ def parse(file):
         if '{' in line:
             # Extract and normalize Section Name
             section_name = extract_section_name(line)
-            html_output += f"<div class='section'><h3>{section_name}</h3>\n"
+
+            if section_name.upper() == "KEY":
+                key_value = extract_key(line)
+                html_output += f'<meta name="key" content="{key_value}">\n'
+
+            else:
+                html_output += f"<div class='section'><h3>{section_name}</h3>\n"
+
         elif '}' in line:
             # Close section and extract its body
             section_html = extract_section_body(section_body)
             html_output += section_html
+
             # Store the section's HTML for future use using the normalized name
             section_storage[section_name] = section_html
             section_body = ""  # Reset for next section
+
         elif line.replace('_', ' ') in section_storage:
             # If the normalized section name is found again, reuse the stored HTML
             normalized_name = line.replace('_', ' ')
             html_output += f"<div class='section'><h3>{normalized_name}</h3>\n"
             html_output += section_storage[normalized_name]
+
         else:
             section_body += line + "\n"  # Collect lines for the section body
     
@@ -88,6 +102,7 @@ html_header = """
 """
 html_output = parse(chords_content)
 html_end = """
+<script src="script.js"></script>
 </body>
 </html>
 """
